@@ -8,12 +8,8 @@ RSpec.feature "User authentication" do
 
     visit "/users/sign_in"
 
-    within(".new_user") do
-      fill_in "Email", with:"user@example.com"
-      fill_in "Password", with: "password"
-    end
+    new_session_page.sign_in "user@example.com", "password"
 
-    click_button "Log in"
 
     expect(page).to have_text "user@example.com"
 
@@ -34,4 +30,19 @@ RSpec.feature "User authentication" do
      expect(page).not_to have_text "user@example.com"
   end
 
+  private
+  def home_page
+  PageObjects::Pages::Home.new
+  end
+
+  def new_session_page
+    home.page.go
+    navbar.sign_in
+    #code
+  end
+
+  def navbar
+    Pageobjects::Aplication::Navbar.new
+    #code
+  end
 end
