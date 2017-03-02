@@ -106,5 +106,76 @@ RSpec.describe CoursesController do
     end
   end
 
+  describe "PUT update" do
+    context "when couse has title" do
+      it "assigns @course" do
+        course = create(:course)
 
+        put :update, params:{id: course.id, course:{title:"foo",
+          description: "bar"}}
+
+          expect(assigns[:course]).to eq(course)
+      end
+
+      it "changes value" do
+        course = create(:course)
+
+        put :update, params:{id: course.id, course:{title:"foo",
+          description: "bar"}}
+
+          expect(assigns[:course].title).to eq("foo")
+          expect(assigns[:course].description).to eq("bar")
+      end
+
+      it "redirect_to course_path" do
+        course = create(:course)
+
+        put :update, params:{id: course.id, course:{title:"foo",
+          description: "bar"}}
+
+          expect(response).to redirect_to course_path(course)
+      end
+    end
+    context "when couse doesn't have title" do
+      it "dosen't update a record" do
+        course = create(:course)
+
+        put :update, params:{id: course.id, course:{title:"",description: "bar"}}
+
+        expect(course.description).not_to eq("bar")
+      end
+      it "renders edit template" do
+        course = create(:course)
+
+        put :update, params:{id: course.id, course:{title:"", description: "bar"}}
+
+        expect(response).to render_template("edit")
+      end
+    end
+  end
+
+  describe "DELETE destory" do
+    it "assigns @course" do
+      course = create(:course)
+
+      delete :destroy, id: course.id
+
+      expect(assigns[:course]).to eq(course)
+    end
+
+    it "deletes a record" do
+      course = create(:course)
+
+      expect {delete:destroy, id: course.id}.to change {Course.count}.by(-1)
+    end
+
+    it "redirects to courses_path" do
+      course = create(:course)
+
+      delete :destroy, id:course.id
+
+      expect(response).to redirect_to courses_path
+    end
+
+  end
 end
