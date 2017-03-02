@@ -200,28 +200,43 @@ RSpec.describe CoursesController do
   end
 
   describe 'DELETE destroy' do
-    let(:user) { create(:user) }
-    before {sign_in user}
-    it 'assigns @course' do
+    let(:author) { create(:user) }
+    let(:not_author) { create(:user) }
 
+    context "when sign in as author" do
+      before {sign_in author}
+      it 'assigns @course' do
+        course = create(:course, user: author)
 
-      delete :destroy, id: course.id
+        delete :destroy, id: course.id
 
-      expect(assigns[:course]).to eq(course)
+        expect(assigns[:course]).to eq(course)
+      end
+
+      it 'deletes a record' do
+        course = create(:course, user: author)
+
+        expect { delete:destroy, id: course.id }.to change { Course.count }.by(-1)
+      end
+
+      it 'redirects to courses_path' do
+        course = create(:course, user: author)
+
+        delete :destroy, id: course.id
+
+        expect(response).to redirect_to courses_path
+      end
     end
 
-    it 'deletes a record' do
-      course = create(:course)
-
-      expect { delete:destroy, id: course.id }.to change { Course.count }.by(-1)
+    context "when sign in not as author" do
+      before {sign_in not_author}
+      it "raises an error" do
+        course = create(:course, user: author)
+        expect do
+          delete :destroy, params: {id:course.id}
+        end.to raise_error ActiveRecord::RecordNotFound
+      end
     end
 
-    it 'redirects to courses_path' do
-      course = create(:course)
-
-      delete :destroy, id: course.id
-
-      expect(response).to redirect_to courses_path
-    end
   end
 end
