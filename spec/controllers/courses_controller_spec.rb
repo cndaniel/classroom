@@ -35,7 +35,7 @@ RSpec.describe CoursesController do
     end
   end
 
-  describe 'GET new' do
+  describe 'GET new'  do
     let(:course_new){ build(:course)}
     before(:each) do
       get :new
