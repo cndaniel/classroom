@@ -45,6 +45,7 @@ group :development, :test do
   gem 'factory_girl_rails', '~> 4.7.0'
   gem 'shoulda-matchers', '~> 3.1.1'
   gem 'capybara'
+  gem 'database_rewinder'
 end
 
 group :development do
