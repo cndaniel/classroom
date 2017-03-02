@@ -40,20 +40,19 @@ RSpec.describe CoursesController do
     before(:each) do
       get :new
     end
+
     it 'assign @course' do
-      get :new
       expect(assigns(:course)).to be_a_new(Course)
     end
 
     it 'render template' do
-
-      get :new
-
       expect(response).to render_template('new')
     end
+
   end
 
   describe 'POST create' do
+
 
     context "when course doesn't have a title" do
       it 'doesen`t create a record ' do
