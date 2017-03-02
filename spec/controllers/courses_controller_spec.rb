@@ -66,8 +66,8 @@ RSpec.describe CoursesController do
 
 
   describe 'POST create' do
-
-
+    let(:user){ create(:user)}
+    before { sign_in user}
     context "when course doesn't have a title" do
       it 'doesen`t create a record ' do
         expect do
