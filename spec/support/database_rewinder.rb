@@ -1,4 +1,4 @@
-RSepc.configure do |config|
+RSpec.configure do |config|
   config.before :suite do
     DatabaseRewinder.clean_all
   end
