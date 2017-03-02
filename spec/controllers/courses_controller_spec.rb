@@ -1,15 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe CoursesController do
+ let(:course){ create(:course)}
+ let(:course1){ create(:course)}
+ let(:course2){ create(:course)}
   describe 'GET index' do
     before(:each) do
-      @course1 = create(:course)
-      @course2 = create(:course)
       get :index
     end
 
     it 'assigns @courses' do
-      expect(assigns[:courses]).to eq([@course1, @course2])
+      expect(assigns[:courses]).to eq([course1, course2])
     end
 
     it 'render template' do
@@ -19,34 +20,32 @@ RSpec.describe CoursesController do
   end
 
   describe 'GET show' do
-    it 'assigns @course' do
-      course = create(:course)
-
+    before(:each) do
       get :show, params: { id: course.id }
+    end
+    it 'assigns @course' do
+
+
 
       expect(assigns[:course]).to eq(course)
     end
 
     it 'render template' do
-      course = create(:course)
-
-      get :show, params: { id: course.id }
-
       expect(response).to render_template('show')
     end
   end
 
   describe 'GET new' do
-    it 'assign @course' do
-      course = build(:course)
-
+    let(:course_new){ build(:course)}
+    before(:each) do
       get :new
-
+    end
+    it 'assign @course' do
+      get :new
       expect(assigns(:course)).to be_a_new(Course)
     end
 
     it 'render template' do
-      course = build(:course)
 
       get :new
 
@@ -55,6 +54,7 @@ RSpec.describe CoursesController do
   end
 
   describe 'POST create' do
+
     context "when course doesn't have a title" do
       it 'doesen`t create a record ' do
         expect do
@@ -64,21 +64,20 @@ RSpec.describe CoursesController do
 
       it 'renders a new template ' do
         post :create, params: { course: { description: 'bar' } }
-
         expect(response).to render_template('new')
       end
     end
 
     context 'when course has a title' do
+
       it 'creates a new course record' do
-        course = build(:course)
         expect do
           post :create, params: { course: attributes_for(:course) }
         end.to change { Course.count }.by(1)
       end
 
       it 'redirects to courses_path' do
-        course = build(:course)
+
 
         post :create, params: { course: attributes_for(:course) }
 
@@ -88,66 +87,50 @@ RSpec.describe CoursesController do
   end
 
   describe 'GET edit' do
-    it 'assigns course' do
-      course = create(:course)
 
+    before(:each) do
       get :edit, id: course.id
+    end
+    it 'assigns course' do
 
       expect(assigns[:course]).to eq(course)
     end
 
     it 'render template' do
-      course = create(:course)
-
-      get :edit, id: course.id
 
       expect(response).to render_template('edit')
     end
   end
 
   describe 'PUT update' do
+
     context 'when couse has title' do
-      it 'assigns @course' do
-        course = create(:course)
-
+      before(:each) do
         put :update, params: { id: course.id, course: { title: 'foo',
-                                                        description: 'bar' } }
-
+                                              description: 'bar' } }
+      end
+      it 'assigns @course' do
         expect(assigns[:course]).to eq(course)
       end
 
       it 'changes value' do
-        course = create(:course)
-
-        put :update, params: { id: course.id, course: { title: 'foo',
-                                                        description: 'bar' } }
-
         expect(assigns[:course].title).to eq('foo')
         expect(assigns[:course].description).to eq('bar')
       end
 
       it 'redirect_to course_path' do
-        course = create(:course)
-
-        put :update, params: { id: course.id, course: { title: 'foo',
-                                                        description: 'bar' } }
-
         expect(response).to redirect_to course_path(course)
       end
     end
+
     context "when couse doesn't have title" do
-      it "dosen't update a record" do
-        course = create(:course)
-
+      before(:each) do
         put :update, params: { id: course.id, course: { title: '', description: 'bar' } }
-
+      end
+      it "dosen't update a record" do
         expect(course.description).not_to eq('bar')
       end
       it 'renders edit template' do
-        course = create(:course)
-
-        put :update, params: { id: course.id, course: { title: '', description: 'bar' } }
-
         expect(response).to render_template('edit')
       end
     end
@@ -155,7 +138,7 @@ RSpec.describe CoursesController do
 
   describe 'DELETE destory' do
     it 'assigns @course' do
-      course = create(:course)
+
 
       delete :destroy, id: course.id
 
