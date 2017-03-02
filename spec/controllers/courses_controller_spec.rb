@@ -108,7 +108,8 @@ RSpec.describe CoursesController do
   end
 
   describe 'GET edit' do
-
+    let(:user){create(:user)}
+    before{ sign_in user}
     before(:each) do
       get :edit, id: course.id
     end
