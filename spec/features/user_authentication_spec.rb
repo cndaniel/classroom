@@ -6,7 +6,7 @@ RSpec.feature "User authentication" do
   scenario "existinig uer signs in" do
 
 
-    visit "/users/sign_in"
+
 
     new_session_page.sign_in "user@example.com", "password"
 
@@ -17,14 +17,9 @@ RSpec.feature "User authentication" do
   end
 
   scenario "user signs out" do
-    visit "/users/sign_in"
+      new_session_page.sign_in "user@example.com", "password"
 
-    within(".new_user") do
-      fill_in "Email", with:"user@example.com"
-      fill_in "Password", with: "password"
-    end
-
-    click_button "Log in"
+      navbar.sign_out user.email
     click_link "Logout"
 
      expect(page).not_to have_text "user@example.com"
