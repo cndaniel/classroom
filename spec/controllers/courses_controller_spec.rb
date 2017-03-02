@@ -87,4 +87,24 @@ RSpec.describe CoursesController do
       end
     end
   end
+
+  describe "GET edit" do
+    it "assigns course" do
+      course = create(:course)
+
+      get :edit, id: course.id
+
+      expect(assigns[:course]).to eq(course)
+    end
+
+    it "render template" do
+      course= create(:course)
+
+      get :edit, id: course.id
+
+      expect(response).to render_template("edit")
+    end
+  end
+
+
 end
