@@ -1,4 +1,4 @@
-require_relative "base"
+require_relative "../base"
 
 module PageObjects
   module Pages
@@ -6,6 +6,11 @@ module PageObjects
       def go
         visit root_url
       end
+      def add_course
+        click_on "New course"
+        PageObjects::Courses::Form.new
+      end
+
     end
   end
 end
